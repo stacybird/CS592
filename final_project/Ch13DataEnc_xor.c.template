@@ -5,10 +5,10 @@
 #define USERDEF1 BBBBBB
 
 char msg[] = \
-"To escape analaysis, code can be run in another process than tha original.\n\
+"To escape analysis, code can be run in another process than the original.\n\
 In this level, you will need to determine the password for the correct process.\n \
 To find the password, you will need to unpack it by analyzing the binary using\n \
-\"objdump -d\" or \"gdb\".\n\n";
+\"objdump -d\" or \"gdb\".  Good luck! \n\n";
 
 void print_msg() {
         printf("%s",msg);
@@ -27,19 +27,27 @@ main() {
     pid = fork();
 
     if (pid >= 0) {
-      printf("%ld\n", (long int)pid);
-      printf("Enter your password: ");
-      len = strlen(c);
-      for (i=0; i < len; i++) 
-        c[i] ^= (unsigned char) USERDEF1;
-      scanf("%8s",in);
-      for (i=0; i < len; i++) {
-        if (c[i] != in[i]) {
-          printf("Try again\n");
-          exit(0);
+      if (pid == 0) {
+        int j = getpid();
+        j = ( j % 19) + 1;
+        // printf("I've lost my parent! %d.\n", j); // left in case too hard!
+        printf("Enter your password: ");
+        len = strlen(c);
+        for (i=0; i < len; i++)  
+          c[i] ^= (unsigned char) USERDEF1;
+        scanf("%8s",in);
+        for (i=0; i < len; i++) {
+          if ((c[i] ^ j) != in[i]) {
+            printf("Try again\n");
+            exit(0);
+          }
         }
+        printf("Good Job\n");
       }
-      printf("Good Job\n");
+      else {
+        sleep(5);
+        exit(0);
+      }
     }
     else {
       printf ("Sorry, this failed on your system, please try again!\n");
