@@ -5,10 +5,10 @@
 #define USERDEF1 BBBBBB
 
 char msg[] = \
-"To thwart static analysis, code and data are often encrypted by packers\n\
-using a random key.  In this level, we have taken the password and packed\n\
-it using a sophisticated XOR scheme. To find the password, you will need to\n\
-unpack it by analyzing the binary using \"objdump -d\" or \"gdb\".\n\n";
+"To escape analaysis, code can be run in another process than tha original.\n\
+In this level, you will need to determine the password from that new process.\n \
+To find the password, you will need to unpack it by analyzing the binary using\n \
+\"objdump -d\" or \"gdb\".\n\n";
 
 void print_msg() {
         printf("%s",msg);
