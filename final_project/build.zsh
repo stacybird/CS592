@@ -6,6 +6,7 @@ foreach i (`cat userlist`)
   export ZZ=`echo $i | sha256sum | awk '{print $1}' | cut -c 1-6 | tr \[a-f\] \[A-F\]`
   export AA=`echo "ibase=16;$ZZ" | bc`
   export BB=`echo $i | sha512sum | sum | awk '{print ($1 % 32)+96}'`
-  cat Ch13DataEnc_xor.c.template | sed s/AAAAAA/$AA/ | sed s/BBBBBB/$BB/ >! program.c
-  gcc -m32 -o ${i}/Ch13DataEnc_xor program.c
+  cat Ch12CovertLaunching_process.c.template | sed s/AAAAAA/$AA/ | sed s/BBBBBB/$BB/ >! program.c
+  gcc -m32 -o ${i}/Ch12CovertLaunching_process program.c
 end
+rm program.c
