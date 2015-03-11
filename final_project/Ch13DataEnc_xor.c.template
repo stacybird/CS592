@@ -6,7 +6,7 @@
 
 char msg[] = \
 "To escape analaysis, code can be run in another process than tha original.\n\
-In this level, you will need to determine the password from that new process.\n \
+In this level, you will need to determine the password for the correct process.\n \
 To find the password, you will need to unpack it by analyzing the binary using\n \
 \"objdump -d\" or \"gdb\".\n\n";
 
@@ -17,21 +17,31 @@ void print_msg() {
 char c[9]=USERDEF0;
 char in[9];
 
+pid_t pid;
+
 main() {
     int i,len;
 
     print_msg();
 
-    printf("Enter your password: ");
-    len = strlen(c);
-    for (i=0; i < len; i++) 
-	c[i] ^= (unsigned char) USERDEF1;
-    scanf("%8s",in);
-    for (i=0; i < len; i++) {
-      if (c[i] != in[i]) {
-	printf("Try again\n");
-	exit(0);
+    pid = fork();
+
+    if (pid >= 0) {
+      printf("%ld\n", (long int)pid);
+      printf("Enter your password: ");
+      len = strlen(c);
+      for (i=0; i < len; i++) 
+        c[i] ^= (unsigned char) USERDEF1;
+      scanf("%8s",in);
+      for (i=0; i < len; i++) {
+        if (c[i] != in[i]) {
+          printf("Try again\n");
+          exit(0);
+        }
       }
+      printf("Good Job\n");
     }
-    printf("Good Job\n");
+    else {
+      printf ("Sorry, this failed on your system, please try again!\n");
+    }
 }
