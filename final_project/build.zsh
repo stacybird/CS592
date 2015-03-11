@@ -1,4 +1,5 @@
 #!/bin/zsh
+# added to by Stacy Watts for final project malware spring 2015
 # Start with a decimal string.  XOR with slightly random byte to ensure 
 # 0x7f is never generated
 foreach i (`cat userlist`)
